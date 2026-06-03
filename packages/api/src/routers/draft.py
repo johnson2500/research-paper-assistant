@@ -1,5 +1,5 @@
 import os
-from datetime import UTC, datetime
+from datetime import datetime
 
 from db.database import get_session
 from db.models import Chunk, DraftOutput, ResearchSession
@@ -67,7 +67,7 @@ async def generate_draft(body: DraftRequest, db: AsyncSession = Depends(get_sess
 
     content = completion.choices[0].message.content or ""
 
-    draft = DraftOutput(session_id=body.session_id, content=content, created_at=datetime.now(UTC))
+    draft = DraftOutput(session_id=body.session_id, content=content, created_at=datetime.utcnow())
     db.add(draft)
     await db.commit()
     await db.refresh(draft)

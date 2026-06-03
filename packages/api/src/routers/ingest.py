@@ -1,4 +1,4 @@
-from datetime import UTC, datetime
+from datetime import datetime
 
 from db.database import get_session
 from db.models import Chunk, Document
@@ -19,7 +19,7 @@ async def _store_document(
     content_type: str,
     raw_text: str,
 ) -> tuple[Document, int]:
-    doc = Document(source=source, content_type=content_type, ingested_at=datetime.now(UTC))
+    doc = Document(source=source, content_type=content_type, ingested_at=datetime.utcnow())
     session.add(doc)
     await session.flush()
 

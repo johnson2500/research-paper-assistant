@@ -1,4 +1,4 @@
-from datetime import UTC, datetime
+from datetime import datetime
 
 from db.database import get_session
 from db.models import Chunk, Document, ResearchSession, SessionSnippet
@@ -14,7 +14,7 @@ router = APIRouter()
 
 @router.post("", response_model=SessionOut, status_code=201)
 async def create_session(body: SessionCreate, db: AsyncSession = Depends(get_session)):
-    now = datetime.now(UTC)
+    now = datetime.utcnow()
     session = ResearchSession(name=body.name, created_at=now, updated_at=now)
     db.add(session)
     await db.commit()
@@ -86,7 +86,7 @@ async def add_snippet(session_id: int, body: SnippetAdd, db: AsyncSession = Depe
 
     snippet = SessionSnippet(session_id=session_id, chunk_id=body.chunk_id, order=order, annotation=body.annotation)
     db.add(snippet)
-    session.updated_at = datetime.now(UTC)
+    session.updated_at = datetime.utcnow()
     await db.commit()
     await db.refresh(snippet)
 
