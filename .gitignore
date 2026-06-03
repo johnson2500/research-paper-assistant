@@ -13,6 +13,11 @@ node_modules/
 .pnpm-store/
 dist/
 .turbo/
+*.tsbuildinfo
+
+# TypeScript compiled output (src/ only, keep dist/)
+packages/ui/src/**/*.js
+packages/ui/src/**/*.js.map
 
 # Env
 .env
