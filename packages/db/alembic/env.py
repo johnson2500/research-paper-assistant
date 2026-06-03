@@ -9,7 +9,7 @@ from alembic import context
 
 # Ensure the db package is importable when running alembic directly
 import sys, pathlib
-sys.path.insert(0, str(pathlib.Path(__file__).parents[2]))
+sys.path.insert(0, str(pathlib.Path(__file__).parents[1]))
 
 from db.models import Base
 
