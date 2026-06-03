@@ -6,6 +6,11 @@ from sqlalchemy import pool
 from sqlalchemy.ext.asyncio import create_async_engine
 
 from alembic import context
+
+# Ensure the db package is importable when running alembic directly
+import sys, pathlib
+sys.path.insert(0, str(pathlib.Path(__file__).parents[2]))
+
 from db.models import Base
 
 config = context.config
