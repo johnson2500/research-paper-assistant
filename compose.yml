@@ -2,32 +2,39 @@ services:
   db:
     image: pgvector/pgvector:pg16
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: research_assistant
+      POSTGRES_USER: ${POSTGRES_USER:-user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-research_assistant}
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-user}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   api:
     build:
-      context: packages/api
+      context: .
+      dockerfile: packages/api/Containerfile
     ports:
       - "8080:8080"
     environment:
-      DATABASE_URL: postgresql+asyncpg://user:password@db:5432/research_assistant
-      LLM_BASE_URL: http://llm:8000/v1
-      LLM_API_KEY: unused
-      LLM_MODEL: granite-3.1-8b-instruct
-      EMBED_BASE_URL: http://embed:8001/v1
-      EMBED_API_KEY: unused
-      EMBED_MODEL: nomic-embed-text
-      MAX_DOCUMENT_SIZE_MB: "250"
-      CHUNK_SIZE: "512"
-      CHUNK_OVERLAP: "64"
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-user}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-research_assistant}
+      LLM_BASE_URL: ${LLM_BASE_URL:-http://llm:8000/v1}
+      LLM_API_KEY: ${LLM_API_KEY:-unused}
+      LLM_MODEL: ${LLM_MODEL:-granite-3.1-8b-instruct}
+      EMBED_BASE_URL: ${EMBED_BASE_URL:-http://embed:8001/v1}
+      EMBED_API_KEY: ${EMBED_API_KEY:-unused}
+      EMBED_MODEL: ${EMBED_MODEL:-nomic-embed-text}
+      MAX_DOCUMENT_SIZE_MB: ${MAX_DOCUMENT_SIZE_MB:-250}
+      CHUNK_SIZE: ${CHUNK_SIZE:-512}
+      CHUNK_OVERLAP: ${CHUNK_OVERLAP:-64}
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   ui:
     build:
@@ -35,7 +42,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      VITE_API_BASE_URL: http://localhost:8080
+      VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8080}
     depends_on:
       - api
 

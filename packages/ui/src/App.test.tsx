@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { vi } from "vitest";
 import App from "./App";
 
@@ -11,14 +11,20 @@ vi.mock("./api", () => ({
   },
 }));
 
-test("renders app heading", () => {
+test("renders app heading", async () => {
   render(<App />);
-  expect(screen.getByText("Research Paper Assistant")).toBeInTheDocument();
+  await waitFor(() => {
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Research Paper Assistant");
+  });
 });
 
-test("renders tab navigation", () => {
+test("renders tab navigation buttons", async () => {
   render(<App />);
-  expect(screen.getByText("Ingest")).toBeInTheDocument();
-  expect(screen.getByText("Search")).toBeInTheDocument();
-  expect(screen.getByText("Draft")).toBeInTheDocument();
+  await waitFor(() => {
+    const tabs = screen.getAllByRole("button");
+    const tabTexts = tabs.map((b) => b.textContent);
+    expect(tabTexts).toContain("Ingest");
+    expect(tabTexts).toContain("Search");
+    expect(tabTexts).toContain("Draft");
+  });
 });
