@@ -1,0 +1,35 @@
+# API
+api:
+  image:
+    repository: ghcr.io/johnson2500/research-paper-assistant/api
+    tag: latest
+  replicas: 1
+  env:
+    CHUNK_SIZE: "512"
+    CHUNK_OVERLAP: "64"
+    MAX_DOCUMENT_SIZE_MB: "250"
+
+# UI
+ui:
+  image:
+    repository: ghcr.io/johnson2500/research-paper-assistant/ui
+    tag: latest
+  replicas: 1
+
+# llm-service subchart
+llm-service:
+  models:
+    - name: nomic-embed-text
+      type: embedding
+    - name: granite-3.1-8b-instruct
+      type: generation
+  resources:
+    requests:
+      cpu: "4"
+      memory: "8Gi"
+
+# pgvector subchart
+pgvector:
+  auth:
+    database: research_assistant
+    username: user

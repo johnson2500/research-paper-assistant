@@ -1,0 +1,13 @@
+apiVersion: v2
+name: research-paper-assistant
+description: RAG-powered research paper assistant for scientists
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+dependencies:
+  - name: llm-service
+    version: ">=0.1.0"
+    repository: "https://rh-ai-quickstart.github.io/ai-architecture-charts"
+  - name: pgvector
+    version: ">=0.1.0"
+    repository: "https://rh-ai-quickstart.github.io/ai-architecture-charts"

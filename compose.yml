@@ -1,0 +1,43 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: research_assistant
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: packages/api
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://user:password@db:5432/research_assistant
+      LLM_BASE_URL: http://llm:8000/v1
+      LLM_API_KEY: unused
+      LLM_MODEL: granite-3.1-8b-instruct
+      EMBED_BASE_URL: http://embed:8001/v1
+      EMBED_API_KEY: unused
+      EMBED_MODEL: nomic-embed-text
+      MAX_DOCUMENT_SIZE_MB: "250"
+      CHUNK_SIZE: "512"
+      CHUNK_OVERLAP: "64"
+    depends_on:
+      - db
+
+  ui:
+    build:
+      context: packages/ui
+    ports:
+      - "3000:3000"
+    environment:
+      VITE_API_BASE_URL: http://localhost:8080
+    depends_on:
+      - api
+
+volumes:
+  pgdata:
