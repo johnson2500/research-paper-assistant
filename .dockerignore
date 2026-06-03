@@ -1,4 +1,7 @@
 **/*.egg-info
+**/*.egg-info/**
+*/.egg-info
+__pycache__
 **/__pycache__
 **/.venv
 **/.pytest_cache
@@ -6,3 +9,6 @@
 **/node_modules
 **/dist
 **/.env
+packages/db/db.egg-info
+packages/ingestion/ingestion.egg-info
+packages/api/api.egg-info
