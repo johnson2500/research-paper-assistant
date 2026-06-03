@@ -18,17 +18,15 @@ jobs:
       - name: Install dependencies
         run: cd packages/${{ matrix.package }} && uv sync
       - name: Ruff check
-        run: cd packages/${{ matrix.package }} && uv run ruff check .
+        run: cd packages/${{ matrix.package }} && uvx ruff check .
       - name: Ruff format
-        run: cd packages/${{ matrix.package }} && uv run ruff format --check .
+        run: cd packages/${{ matrix.package }} && uvx ruff format --check .
 
   lint-typescript:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
-        with:
-          version: 9
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -41,8 +39,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
-        with:
-          version: 9
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -71,8 +67,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
-        with:
-          version: 9
       - uses: actions/setup-node@v4
         with:
           node-version: 20
