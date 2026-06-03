@@ -1,5 +1,7 @@
 """Parse PDF, URL, and plain text into raw string content."""
+
 import io
+
 import httpx
 import trafilatura
 from pypdf import PdfReader

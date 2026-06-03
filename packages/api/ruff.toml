@@ -3,3 +3,7 @@ target-version = "py312"
 
 [lint]
 select = ["E", "F", "W", "I", "UP", "B", "SIM"]
+ignore = [
+    "B008",   # Depends() in default args — standard FastAPI pattern
+    "E402",   # Module imports not at top — needed for sys.path manipulation
+]

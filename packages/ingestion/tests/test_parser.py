@@ -1,5 +1,6 @@
 import pytest
-from src.parser import parse_text
+
+from ingestion.parser import parse_text
 
 
 def test_parse_text():

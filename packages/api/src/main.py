@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routers import ingest, search, sessions, draft
+from .routers import draft, ingest, search, sessions
 
 app = FastAPI(title="Research Paper Assistant API", version="0.1.0")
 

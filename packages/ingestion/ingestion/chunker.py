@@ -1,4 +1,5 @@
 """Split text into overlapping chunks."""
+
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 _splitter = RecursiveCharacterTextSplitter(chunk_size=512, chunk_overlap=64)
